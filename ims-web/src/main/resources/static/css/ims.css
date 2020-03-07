@@ -1,0 +1,71 @@
+#login-body {
+    background-image: url('../img/background.jpg');
+    background-size: 100% auto;
+}
+
+#login-form {
+    border: 2px solid #909399;
+    border-radius: 10px;
+    margin: 10rem auto;
+    padding: 1rem;
+    width: 25%;
+}
+
+#login-form h1 {
+    color: #909399;
+    text-align: center;
+}
+
+#login-form .el-button {
+    width: 100%;
+}
+
+#nav {
+    background-color: #409EFF;
+    border-radius: 10px 10px 0 0;
+    color: #303133;
+}
+
+#nav > div:first-child {
+    float: left;
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+#nav > div:last-child {
+    float: right;
+    margin-top: 15px;
+    text-align: right;
+}
+
+#nav i {
+    cursor: pointer;
+}
+
+#menu {
+    float: left;
+}
+
+el-main {
+    float: right;
+    width: calc(100% - 300px);
+}
+
+#search-form {
+    float: left;
+    margin: 10px 0 0 10px;
+}
+
+#add-button {
+    float: right;
+    margin: 10px 10px 0 0;
+}
+
+#pagination {
+    margin-top: 5px;
+}
+
+/*覆盖原<textarea>字体，否则会出现和输入框字体不一致的情况。*/
+#add-or-modify textarea {
+    font-family: Arial;
+}

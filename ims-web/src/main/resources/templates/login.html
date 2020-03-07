@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="js/vue.min.js"></script>
+    <script src="js/element.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/element.min.css">
+    <link rel="stylesheet" href="css/ims.css">
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body id="login-body">
+<el-form id="login-form" :model="loginForm">
+    <h1>库存管理系统</h1>
+    <el-form-item>
+        <el-input v-model="loginForm.username" placeholder="请输入用户名..." clearable></el-input>
+    </el-form-item>
+    <el-form-item>
+        <el-input v-model="loginForm.password" placeholder="请输入密码..." show-password clearable></el-input>
+    </el-form-item>
+    <el-form-item>
+        <el-button type="info" @click="login" :loading="loginForm.loading">登 录</el-button>
+    </el-form-item>
+</el-form>
+<script>
+
+    let loginForm = new Vue({
+        el: '#login-form',
+        data: {
+            loginForm: {
+                username: '',
+                password: '',
+                loading: false
+            }
+        },
+        methods: {
+            login: function () {
+                this.loginForm.loading = true;
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    data: {
+                        username: this.loginForm.username,
+                        password: this.loginForm.password
+                    },
+                    success: response => {
+                        if (response['code'] == null) {
+                            showSystemException(this, '登录失败！');
+                        } else {
+                            if (response['code'] === 0) {
+                                document.location.href = '/';
+                            } else {
+                                showBusinessException(this, response['msg'])
+                            }
+                        }
+                    },
+                    error: response => showSystemException(this, '登录失败！'),
+                    complete: response => this.loginForm.loading = false
+                })
+            }
+        }
+    });
+
+    let showBusinessException = function (who, msg) {
+        who.$message({
+            type: 'error',
+            message: msg
+        })
+    };
+
+    let showSystemException = function (who, msg) {
+        who.$message({
+            type: 'error',
+            message: msg
+        })
+    }
+
+</script>
+</body>
+</html>

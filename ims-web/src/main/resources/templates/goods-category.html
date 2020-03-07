@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <script src="js/vue.min.js"></script>
+    <script src="js/element.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/element.min.css">
+    <link rel="stylesheet" href="css/ims.css">
+    <meta charset="UTF-8">
+    <title>物品类别管理</title>
+</head>
+<body>
+<el-container>
+    <el-header id="nav">
+        <div>
+            <span>库存管理系统</span>
+        </div>
+        <div>
+            <span th:text="${user}"></span>
+            <el-dropdown trigger="click" @command="handleCommand">
+                <i class="el-dropdown-link el-icon-setting"></i>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="logout">注销</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </div>
+    </el-header>
+    <el-container>
+        <el-aside id="menu">
+            <el-menu default-active="2" @select="handleSelect">
+                <el-menu-item index="1"><i class="el-icon-document"></i>物品管理</el-menu-item>
+                <el-menu-item index="2"><i class="el-icon-document"></i>物品类别管理</el-menu-item>
+                <el-submenu index="3">
+                    <template slot="title"><i class="el-icon-menu"></i>更多</template>
+                    <el-menu-item index="3-1">用户管理</el-menu-item>
+                    <el-menu-item index="3-2">关于</el-menu-item>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+        <el-main>
+            <div>
+                <el-button id="add-button" type="primary" @click="addItem" size="mini">新 增</el-button>
+            </div>
+            <el-table id="table" :data="tableData" stripe size="mini">
+                <el-table-column prop="name" label="名称"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+                <el-table-column prop="updateTime" label="修改时间" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="text" @click="modifyItem(scope)" size="small">编辑</el-button>
+                        <el-button type="text" @click="deleteItem(scope)" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination id="pagination" layout="prev, pager, next" :page-count="pageCount"
+                           @current-change="changePage" hide-on-single-page="true" background small></el-pagination>
+        </el-main>
+    </el-container>
+</el-container>
+<el-dialog id="add-or-modify" :title="addOrModifyTitle" :visible="addOrModifyVisible" width="30%" :show-close="false">
+    <el-form label-width="30%" label-position="right" :model="addOrModifyForm" size="small">
+        <el-form-item label="名称">
+            <el-input v-model="addOrModifyForm.name" clearable></el-input>
+        </el-form-item>
+    </el-form>
+    <div slot="footer">
+        <el-button @click="cancelAddOrModify">取 消</el-button>
+        <el-button type="primary" @click="addOrModify">确 定</el-button>
+    </div>
+</el-dialog>
+<script>
+
+    let nav = new Vue({
+        el: '#nav',
+        methods: {
+            handleCommand: function (command) {
+                switch (command) {
+                    case 'logout':
+                        document.location.href = '/logout'
+                }
+            }
+        }
+    });
+
+    let menu = new Vue({
+        el: '#menu',
+        methods: {
+            handleSelect: function (key, keyPath) {
+                switch (key) {
+                    case '1':
+                        document.location.href = '/goods';
+                        break;
+                    case '2':
+                        document.location.href = '/goods-category';
+                        break;
+                    case '3-1':
+                        document.location.href = '/user';
+                        break;
+                    case '3-2':
+                        this.$alert('<div style="text-align: center"><p>库存管理系统</p><p>Inventory Management System</p><p>Version: 20200307</p></div>', '关于', {
+                            confirmButtonText: '确 定',
+                            dangerouslyUseHTMLString: true,
+                            showClose: false
+                        })
+                }
+            }
+        }
+    });
+
+    let addButton = new Vue({
+        el: '#add-button',
+        methods: {
+            addItem: function () {
+                addOrModify.addOrModifyTitle = '新增';
+                addOrModify.addOrModifyVisible = true;
+            }
+        }
+    });
+
+    let table = new Vue({
+        el: '#table',
+        data: {
+            tableData: []
+        },
+        methods: {
+            getTableData: function () {
+                $.ajax({
+                    url: '/goods-category/all',
+                    type: 'GET',
+                    success: response => {
+                        if (response['code'] == null) {
+                            showSystemException(this, '获取列表数据失败！')
+                        } else {
+                            if (response['code'] === 0) {
+                                this.tableData = response['data'][2].filter(function (item) {
+                                    item.createTime = item.createTime.substring(0, 19);
+                                    item.updateTime = item.updateTime.substring(0, 19);
+                                    return item
+                                });
+                                pagination.pageCount = response['data'][1]
+                            } else {
+                                showBusinessException(this, response['msg'])
+                            }
+                        }
+                    },
+                    error: response => showSystemException(this, '获取列表数据失败！')
+                })
+            },
+            modifyItem: function (scope) {
+                addOrModify.addOrModifyTitle = '编辑';
+                addOrModify.addOrModifyVisible = true;
+                addOrModify.addOrModifyForm.name = scope.row.name;
+                addOrModify.addOrModifyForm.id = scope.row.id
+            },
+            deleteItem: function (scope) {
+                this.$confirm('确认删除？', '删除', {
+                    confirmButtonText: '确 定',
+                    cancelButtonText: '取 消',
+                    type: 'warning',
+                    showClose: false
+                }).then(() => {
+                    $.ajax({
+                        url: '/goods-category',
+                        type: 'DELETE',
+                        data: {
+                            id: scope.row.id
+                        },
+                        success: response => {
+                            if (response['code'] == null) {
+                                showSystemException(this, '删除物品分类失败！')
+                            } else {
+                                if (response['code'] === 0) {
+                                    document.location.reload()
+                                } else {
+                                    showBusinessException(this, response['msg'])
+                                }
+                            }
+                        },
+                        error: response => showSystemException(this, '删除物品分类失败！')
+                    })
+                }).catch(() => {//不加catch控制台要报错，但不影响功能。
+                })
+            }
+        },
+        created: function () {
+            this.getTableData()
+        }
+    });
+
+    let pagination = new Vue({
+        el: '#pagination',
+        data: {
+            pageCount: 0
+        },
+        methods: {
+            changePage: function (targetPage) {
+                $.ajax({
+                    url: '/goods-category/page',
+                    type: 'GET',
+                    data: {
+                        targetPage: targetPage
+                    },
+                    success: response => {
+                        if (response['code'] == null) {
+                            showSystemException(this, '获取列表数据失败！')
+                        } else {
+                            if (response['code'] === 0) {
+                                table.tableData = response['data'][2].filter(function (item) {
+                                    item.createTime = item.createTime.substring(0, 19);
+                                    item.updateTime = item.updateTime.substring(0, 19);
+                                    return item
+                                });
+                                pagination.pageCount = response['data'][1]
+                            } else {
+                                showBusinessException(this, response['msg'])
+                            }
+                        }
+                    },
+                    error: response => showSystemException(this, '获取列表数据失败！')
+                })
+            }
+        }
+    });
+
+    let addOrModify = new Vue({
+        el: '#add-or-modify',
+        data: {
+            addOrModifyForm: {
+                name: '',
+                id: 0
+            },
+            addOrModifyTitle: '',
+            addOrModifyVisible: false
+        },
+        methods: {
+            cancelAddOrModify: function () {
+                this.addOrModifyForm.name = '';
+                this.addOrModifyForm.id = 0;
+                this.addOrModifyTitle = '';
+                this.addOrModifyVisible = false
+            },
+            addOrModify: function () {
+                $.ajax({
+                    url: '/goods-category',
+                    type: this.addOrModifyTitle === '新增' ? 'POST' : 'PUT',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify({
+                        name: this.addOrModifyForm.name,
+                        id: this.addOrModifyForm.id
+                    }),
+                    success: response => {
+                        if (response['code'] == null) {
+                            showSystemException(this, '新增或编辑物品分类失败！')
+                        } else {
+                            if (response['code'] === 0) {
+                                document.location.reload()
+                            } else {
+                                showBusinessException(this, response['msg'])
+                            }
+                        }
+                    },
+                    error: response => showSystemException(this, '新增或编辑物品分类失败！')
+                });
+            }
+        }
+    });
+
+    let showBusinessException = function (who, msg) {
+        who.$message({
+            type: 'error',
+            message: msg
+        })
+    };
+
+    let showSystemException = function (who, msg) {
+        who.$message({
+            type: 'error',
+            message: msg
+        })
+    }
+
+</script>
+</body>
+</html>

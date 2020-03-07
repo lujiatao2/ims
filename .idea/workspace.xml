@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d0a56a10-2590-4da9-ad79-a6bc1884ecd4" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="JavaScript File" />
+        <option value="Class" />
+        <option value="CSS File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1XhW8k5h6LOFNW6ZRPyuII2rSJo" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/IMS Web/src/main/java/com/lujiatao/ims/web/util" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\resources\static\img" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\resources\static\js" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\resources\static" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\resources\static\css" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\resources\static\css\fonts" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.lujiatao.ims.server.repository" />
+      <recent name="com.lujiatao.ims.server.service.impl" />
+      <recent name="com.lujiatao.ims.service" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\java\com\lujiatao\ims\web\util" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\resources\static\js" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\java\com\lujiatao\ims\web\controller" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\java\com\lujiatao\ims\web\configuration" />
+      <recent name="E:\Software Testing\2. Software Development\Java\IdeaProjects\IMS\IMS Web\src\main\resources\static.js" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.Application (1)">
+    <configuration name="Application (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="ims-web" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lujiatao.ims.web.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.lujiatao.ims.web.Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="ims-server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lujiatao.ims.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.lujiatao.ims.server.Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.Application (1)" />
+        <item itemvalue="Spring Boot.Application" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d0a56a10-2590-4da9-ad79-a6bc1884ecd4" name="Default Changelist" comment="" />
+      <created>1581498649883</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581498649883</updated>
+      <workItem from="1581498654022" duration="14188000" />
+      <workItem from="1581558005595" duration="41752000" />
+      <workItem from="1581643781075" duration="41369000" />
+      <workItem from="1581733841519" duration="37378000" />
+      <workItem from="1581821167931" duration="22981000" />
+      <workItem from="1581948754804" duration="209000" />
+      <workItem from="1581949319991" duration="471000" />
+      <workItem from="1581950316417" duration="2041000" />
+      <workItem from="1581954076728" duration="334000" />
+      <workItem from="1581996632232" duration="698000" />
+      <workItem from="1582465354978" duration="70000" />
+      <workItem from="1582596635067" duration="687000" />
+      <workItem from="1582601603951" duration="1315000" />
+      <workItem from="1582632607489" duration="3885000" />
+      <workItem from="1582689573368" duration="5313000" />
+      <workItem from="1582714506657" duration="432000" />
+      <workItem from="1582773323295" duration="2021000" />
+      <workItem from="1582796843495" duration="670000" />
+      <workItem from="1582805470019" duration="856000" />
+      <workItem from="1583584074613" duration="2900000" />
+      <workItem from="1583587036409" duration="3163000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="137" y="21" width="1165" height="686" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582712993515">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="137" y="21" width="1165" height="686" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1582712993515" />
+    <state width="1322" height="174" key="GridCell.Tab.0.bottom" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state width="1322" height="174" key="GridCell.Tab.0.center" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state width="1322" height="174" key="GridCell.Tab.0.left" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state width="1322" height="174" key="GridCell.Tab.0.right" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state width="1322" height="174" key="GridCell.Tab.1.bottom" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state width="1322" height="174" key="GridCell.Tab.1.center" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state width="1322" height="174" key="GridCell.Tab.1.left" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state width="1322" height="174" key="GridCell.Tab.1.right" timestamp="1583590626671">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1322" height="174" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1583590626671" />
+    <state x="163" y="0" key="SettingsEditor" timestamp="1583587176063">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="163" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1583587176063" />
+  </component>
+</project>

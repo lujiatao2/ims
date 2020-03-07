@@ -1,0 +1,7 @@
+dubbo:
+  application:
+    name: ims-web
+  registry:
+    address: zookeeper://localhost:2181
+server:
+  port: 9002

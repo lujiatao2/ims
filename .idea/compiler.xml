@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="ims-common" />
+        <module name="ims-server" />
+        <module name="IMS Web" />
+        <module name="ims-web" />
+        <module name="IMS Service" />
+        <module name="IMS Server" />
+        <module name="ims-service" />
+        <module name="IMS Common" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="IMS Common" options="-parameters" />
+      <module name="IMS Server" options="-parameters" />
+      <module name="IMS Service" options="-parameters" />
+      <module name="IMS Web" options="-parameters" />
+      <module name="ims-common" options="-parameters" />
+      <module name="ims-server" options="-parameters" />
+      <module name="ims-service" options="-parameters" />
+      <module name="ims-web" options="-parameters" />
+    </option>
+  </component>
+</project>

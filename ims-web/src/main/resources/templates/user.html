@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <script src="js/vue.min.js"></script>
+    <script src="js/element.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/element.min.css">
+    <link rel="stylesheet" href="css/ims.css">
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+</head>
+<body>
+<el-container>
+    <el-header id="nav">
+        <div>
+            <span>库存管理系统</span>
+        </div>
+        <div>
+            <span th:text="${user}"></span>
+            <el-dropdown trigger="click" @command="handleCommand">
+                <i class="el-dropdown-link el-icon-setting"></i>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="logout">注销</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </div>
+    </el-header>
+    <el-container>
+        <el-aside id="menu">
+            <el-menu default-active="3-1" @select="handleSelect">
+                <el-menu-item index="1"><i class="el-icon-document"></i>物品管理</el-menu-item>
+                <el-menu-item index="2"><i class="el-icon-document"></i>物品类别管理</el-menu-item>
+                <el-submenu index="3">
+                    <template slot="title"><i class="el-icon-menu"></i>更多</template>
+                    <el-menu-item index="3-1">用户管理</el-menu-item>
+                    <el-menu-item index="3-2">关于</el-menu-item>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+        <el-main>
+            <div>
+                <el-button id="add-button" type="primary" @click="addItem" size="mini">新 增</el-button>
+            </div>
+            <el-table id="table" :data="tableData" stripe size="mini">
+                <el-table-column prop="username" label="用户名"></el-table-column>
+                <el-table-column prop="role" label="角色"></el-table-column>
+                <el-table-column prop="isActive" label="帐户状态" align="center"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+                <el-table-column prop="updateTime" label="修改时间" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="text" @click="modifyItem(scope)" size="small">编辑</el-button>
+                        <el-button type="text" @click="deleteItem(scope)" size="small">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination id="pagination" layout="prev, pager, next" :page-count="pageCount"
+                           @current-change="changePage" hide-on-single-page="true" background small></el-pagination>
+        </el-main>
+    </el-container>
+</el-container>
+<el-dialog id="add-or-modify" :title="addOrModifyTitle" :visible="addOrModifyVisible" width="30%" :show-close="false">
+    <el-form label-width="30%" label-position="right" :model="addOrModifyForm" size="small">
+        <el-form-item label="用户名">
+            <el-input v-model="addOrModifyForm.username" :disabled="addOrModifyForm.disabled1" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+            <el-input v-model="addOrModifyForm.password" show-password clearable></el-input>
+        </el-form-item>
+        <el-form-item label="角色">
+            <el-select v-model="addOrModifyForm.role" @change="getSelectedValue" @clear="clearSelectedValue" clearable>
+                <el-option label="普通用户" value="ROLE_USER"></el-option>
+                <el-option label="管理员" value="ROLE_ADMIN"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="帐户状态">
+            <el-radio-group v-model="addOrModifyForm.isActive">
+                <el-radio :disabled="addOrModifyForm.disabled2" label="启用"></el-radio>
+                <el-radio :disabled="addOrModifyForm.disabled2" label="禁用"></el-radio>
+            </el-radio-group>
+        </el-form-item>
+    </el-form>
+    <div slot="footer">
+        <el-button @click="cancelAddOrModify">取 消</el-button>
+        <el-button type="primary" @click="addOrModify">确 定</el-button>
+    </div>
+</el-dialog>
+<script>
+
+    let nav = new Vue({
+        el: '#nav',
+        methods: {
+            handleCommand: function (command) {
+                switch (command) {
+                    case 'logout':
+                        document.location.href = '/logout'
+                }
+            }
+        }
+    });
+
+    let menu = new Vue({
+        el: '#menu',
+        methods: {
+            handleSelect: function (key, keyPath) {
+                switch (key) {
+                    case '1':
+                        document.location.href = '/goods';
+                        break;
+                    case '2':
+                        document.location.href = '/goods-category';
+                        break;
+                    case '3-1':
+                        document.location.href = '/user';
+                        break;
+                    case '3-2':
+                        this.$alert('<div style="text-align: center"><p>库存管理系统</p><p>Inventory Management System</p><p>Version: 20200307</p></div>', '关于', {
+                            confirmButtonText: '确 定',
+                            dangerouslyUseHTMLString: true,
+                            showClose: false
+                        })
+                }
+            }
+        }
+    });
+
+    let addButton = new Vue({
+        el: '#add-button',
+        methods: {
+            addItem: function () {
+                addOrModify.addOrModifyTitle = '新增';
+                addOrModify.addOrModifyVisible = true;
+            }
+        }
+    });
+
+    let table = new Vue({
+        el: '#table',
+        data: {
+            tableData: []
+        },
+        methods: {
+            getTableData: function () {
+                $.ajax({
+                    url: '/user/all',
+                    type: 'GET',
+                    success: response => {
+                        if (response['code'] == null) {
+                            showSystemException(this, '获取列表数据失败！')
+                        } else {
+                            if (response['code'] === 0) {
+                                this.tableData = response['data'][2].filter(function (item) {
+                                    item.createTime = item.createTime.substring(0, 19);
+                                    item.updateTime = item.updateTime.substring(0, 19);
+                                    item.isActive = item.isActive ? '启用' : '禁用';
+                                    switch (item.role) {
+                                        case 'ROLE_USER':
+                                            item.role = '普通用户';
+                                            break;
+                                        case 'ROLE_ADMIN':
+                                            item.role = '管理员'
+                                    }
+                                    return item
+                                });
+                                pagination.pageCount = response['data'][1]
+                            } else {
+                                showBusinessException(this, response['msg'])
+                            }
+                        }
+                    },
+                    error: response => showSystemException(this, '获取列表数据失败！')
+                })
+            },
+            modifyItem: function (scope) {
+                addOrModify.addOrModifyTitle = '编辑';
+                addOrModify.addOrModifyVisible = true;
+                addOrModify.addOrModifyForm.username = scope.row.username;
+                addOrModify.addOrModifyForm.password = scope.row.password;
+                addOrModify.addOrModifyForm.role = scope.row.role;
+                addOrModify.addOrModifyForm.isActive = scope.row.isActive;
+                addOrModify.addOrModifyForm.disabled1 = true;
+                addOrModify.addOrModifyForm.disabled2 = false;
+                switch (scope.row.role) {
+                    case '普通用户':
+                        addOrModify.roleValue = 'ROLE_USER';
+                        break;
+                    case '管理员':
+                        addOrModify.roleValue = 'ROLE_ADMIN'
+                }
+            },
+            deleteItem: function (scope) {
+                this.$confirm('确认删除？', '删除', {
+                    confirmButtonText: '确 定',
+                    cancelButtonText: '取 消',
+                    type: 'warning',
+                    showClose: false
+                }).then(() => {
+                    $.ajax({
+                        url: '/user',
+                        type: 'DELETE',
+                        data: {
+                            username: scope.row.username
+                        },
+                        success: response => {
+                            if (response['code'] == null) {
+                                showSystemException(this, '删除用户失败！')
+                            } else {
+                                if (response['code'] === 0) {
+                                    document.location.reload()
+                                } else {
+                                    showBusinessException(this, response['msg'])
+                                }
+                            }
+                        },
+                        error: response => showSystemException(this, '删除用户失败！')
+                    })
+                }).catch(() => {//不加catch控制台要报错，但不影响功能。
+                })
+            }
+        },
+        created: function () {
+            this.getTableData()
+        }
+    });
+
+    let pagination = new Vue({
+        el: '#pagination',
+        data: {
+            pageCount: 0
+        },
+        methods: {
+            changePage: function (targetPage) {
+                $.ajax({
+                    url: '/user/page',
+                    type: 'GET',
+                    data: {
+                        targetPage: targetPage
+                    },
+                    success: response => {
+                        if (response['code'] == null) {
+                            showSystemException(this, '获取列表数据失败！')
+                        } else {
+                            if (response['code'] === 0) {
+                                table.tableData = response['data'][2].filter(function (item) {
+                                    item.createTime = item.createTime.substring(0, 19);
+                                    item.updateTime = item.updateTime.substring(0, 19);
+                                    item.isActive = item.isActive ? '启用' : '禁用';
+                                    switch (item.role) {
+                                        case 'ROLE_USER':
+                                            item.role = '普通用户';
+                                            break;
+                                        case 'ROLE_ADMIN':
+                                            item.role = '管理员'
+                                    }
+                                    return item
+                                });
+                                pagination.pageCount = response['data'][1]
+                            } else {
+                                showBusinessException(this, response['msg'])
+                            }
+                        }
+                    },
+                    error: response => showSystemException(this, '获取列表数据失败！')
+                })
+            }
+        }
+    });
+
+    let addOrModify = new Vue({
+        el: '#add-or-modify',
+        data: {
+            addOrModifyForm: {
+                username: '',
+                password: '',
+                role: '',
+                isActive: '启用',
+                disabled1: false,
+                disabled2: true
+            },
+            roleValue: '',
+            addOrModifyTitle: '',
+            addOrModifyVisible: false
+        },
+        methods: {
+            getSelectedValue: function (value) {
+                this.roleValue = value
+            },
+            clearSelectedValue: function () {
+                this.roleValue = ''
+            },
+            cancelAddOrModify: function () {
+                this.addOrModifyForm.username = '';
+                this.addOrModifyForm.password = '';
+                this.addOrModifyForm.role = '';
+                this.addOrModifyForm.isActive = '启用';
+                this.addOrModifyForm.disabled1 = false;
+                this.addOrModifyForm.disabled2 = true;
+                this.roleValue = '';
+                this.addOrModifyTitle = '';
+                this.addOrModifyVisible = false
+            },
+            addOrModify: function () {
+                $.ajax({
+                    url: '/user',
+                    type: this.addOrModifyTitle === '新增' ? 'POST' : 'PUT',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify({
+                        username: this.addOrModifyForm.username,
+                        password: this.addOrModifyForm.password,
+                        role: this.roleValue,
+                        isActive: this.addOrModifyForm.isActive === '启用'
+                    }),
+                    success: response => {
+                        if (response['code'] == null) {
+                            showSystemException(this, '新增或编辑用户失败！')
+                        } else {
+                            if (response['code'] === 0) {
+                                document.location.reload()
+                            } else {
+                                showBusinessException(this, response['msg'])
+                            }
+                        }
+                    },
+                    error: response => showSystemException(this, '新增或编辑用户失败！')
+                });
+            }
+        }
+    });
+
+    let showBusinessException = function (who, msg) {
+        who.$message({
+            type: 'error',
+            message: msg
+        })
+    };
+
+    let showSystemException = function (who, msg) {
+        who.$message({
+            type: 'error',
+            message: msg
+        })
+    }
+
+</script>
+</body>
+</html>
