@@ -18,7 +18,7 @@ spring:
     #    password: yourpassword
     #    driver-class-name: com.mysql.cj.jdbc.Driver
     #使用H2数据库
-    url: jdbc:h2:tcp://localhost/~/ims;IFEXISTS=true
+    url: jdbc:h2:mem:test
     username: sa
     password: 
     driver-class-name: org.h2.Driver
